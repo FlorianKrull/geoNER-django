@@ -1,0 +1,33 @@
+
+{% extends 'base.html' %}
+
+
+{% block breadcrumb %}
+  <li class="breadcrumb-item active">Collections</li>
+{% endblock %}
+
+{% block content %}
+  <table class="table">
+    <thead class="thead-inverse">
+      <tr>
+        <th>Collections</th>
+        <th>Version</th>
+        <th>Document</th>
+        <th>Last Version</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for collection in collections %}
+        <tr>
+          <td>
+            <a href="{% url 'collection_docs' collection.pk %}">{{ collection.name }}</a>
+    <small class="text-muted d-block">{{ collection.description }}</small>
+          </td>
+          <td class="align-middle">0</td>
+          <td class="align-middle">0</td>
+          <td></td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
