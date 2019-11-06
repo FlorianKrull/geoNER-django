@@ -47,7 +47,6 @@ def ner_detection(request, pk, document_pk):
     version = get_object_or_404(Version, pk=document_pk)
     nlp = spacy.load("de")
     document = get_object_or_404(Document, collection__pk=pk, pk=document_pk)
-    #doc = nlp('Sonntag den 20. August marschirte ich mit Michel Groder von Kals wenige Minuten nach 6 früh durch das Virgenthal aufwärts nach Prägraten .')
     doc = nlp(version.text)
     html = displacy.render(doc, style="ent", page= True)
     return render(request, 'ner_detection.html', {'document': document,'html': html})
