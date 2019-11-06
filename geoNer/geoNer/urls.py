@@ -14,12 +14,13 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.urls import path
 from django.contrib.auth import views as auth_views
 
 from collection import views
 from accounts import views as accounts_views
+from ner_trainer import urls as ner_trainer_urls
 
 urlpatterns = [
     url(r'^$', views.home, name='home'),
@@ -55,4 +56,8 @@ urlpatterns = [
     url(r'^settings/password/done/$', auth_views.PasswordChangeDoneView.as_view(template_name='password_change_done.html'),
             name='password_change_done'),
     url(r'^collection/(?P<pk>\d+)/document/(?P<document_pk>\d+)/ner_detection/$', views.ner_detection, name='ner_detection'),
+    url(r'^trainer', include(ner_trainer_urls)),
 ]
+
+
+# Use this framework to train models with spacy https://johnfraney.github.io/django-ner-trainer/

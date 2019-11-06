@@ -29,7 +29,7 @@
     <tbody>
         {% for document in collection.document.all %}
         <tr>
-            <td><a href="{% url 'ner_detection' collection.pk document.pk %}">{{ document.subject }}</a></td>
+            <td><a href="{% url 'document_version' collection.pk document.pk %}">{{ document.subject }}</a></td>
             <td>{{ document.starter.username }}</td>
             <td>0</td>
             <td>0</td>

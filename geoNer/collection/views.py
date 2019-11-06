@@ -44,54 +44,10 @@ def document_version(request, pk, document_pk):
 
 
 def ner_detection(request, pk, document_pk):
-    #nlp = spacy.load("en_core_web_sm")
-    #doc = nlp(text)
-    #print(displacy.render(doc, style="ent",page=True))
-    #return displacy.render(doc, style="ent",page=True)
+    version = get_object_or_404(Version, pk=document_pk)
+    nlp = spacy.load("de")
     document = get_object_or_404(Document, collection__pk=pk, pk=document_pk)
-    return render(request, 'ner_detection.html', {'document': document})
-
-
-def visualize_view(request):
-    ret = {}
-    text = request.POST.get('sentences')
-    if (text is None):
-        return render(request, 'nlp/visualize_error.html')
-    markup = visualize_text(text)
-    ret['json'] = markup
-    return render(request, 'nlp/visualize.html', ret)
-
-
-def analyze(request):
-    'API text analyze view'
-    if request.method == 'POST':
-        text = request.body.decode('utf-8')
-        try:
-            text = json.loads(text)['text']
-        except ValueError:
-            # catch POST form as well
-            for key in request.POST.dict().keys():
-                text = key
-
-        if settings.ALLOW_URL_IMPORTS and text.startswith(('http://', 'https://', 'www')):
-            page = requests.get(text)
-            doc = Document(page.text)
-            soup = BeautifulSoup(doc.summary())
-            text = soup.get_text()
-            title = doc.title().strip()
-            text = '{0}.\n{1}'.format(title, text)
-
-        if not text:
-            response = JsonResponse(
-                {'status': 'false', 'message': 'need some text here!'})
-            response.status_code = 400
-            return response
-
-        # add some limit here
-        text = text[:200000]
-        ret = {}
-        ret = analyze_text(text)
-        return JsonResponse(ret)
-    else:
-        ret = {'methods_allowed': 'POST'}
-        return JsonResponse(ret)
+    #doc = nlp('Sonntag den 20. August marschirte ich mit Michel Groder von Kals wenige Minuten nach 6 früh durch das Virgenthal aufwärts nach Prägraten .')
+    doc = nlp(version.text)
+    html = displacy.render(doc, style="ent", page= True)
+    return render(request, 'ner_detection.html', {'document': document,'html': html})

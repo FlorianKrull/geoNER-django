@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'collection',
     'widget_tweaks',
     'accounts',
+    'ner_trainer',
 ]
 
 MIDDLEWARE = [
