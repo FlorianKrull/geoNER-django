@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django_google_maps import fields as map_fields
 
 # Create your models here.
 
@@ -16,9 +17,15 @@ class Document(models.Model):
 
 
 class Version(models.Model):
-    text = models.TextField(max_length=4000)
+    text = models.TextField(max_length=10000)
     document = models.ForeignKey(Document, related_name='version',on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(null=True)
     created_by = models.ForeignKey(User, related_name='version',on_delete=models.CASCADE)
     updated_by = models.ForeignKey(User, null=True, related_name='+', on_delete=models.CASCADE)
+
+class Entity(models.Model):
+    text = models.TextField(max_length=200)
+    version = models.ForeignKey(Version, related_name='entity',on_delete=models.CASCADE)
+    created_by = models.ForeignKey(User, related_name='entity',on_delete=models.CASCADE)
+    geolocation = map_fields.GeoLocationField(max_length=100)

@@ -4,6 +4,7 @@ from .models import Collection, Document, Version
 from django.contrib.auth.models import User
 from .forms import NewDocForm
 from django.contrib.auth.decorators import login_required
+from .utils import analyze_text, visualize_text
 
 import spacy
 from spacy import displacy
@@ -44,9 +45,13 @@ def document_version(request, pk, document_pk):
 
 
 def ner_detection(request, pk, document_pk):
+
     version = get_object_or_404(Version, pk=document_pk)
     nlp = spacy.load("de")
     document = get_object_or_404(Document, collection__pk=pk, pk=document_pk)
     doc = nlp(version.text)
     html = displacy.render(doc, style="ent", page= True)
-    return render(request, 'ner_detection.html', {'document': document,'html': html})
+    return render(request, 'ner_detection.html', {'document': document,'html': html, 'doc' : doc})
+
+
+

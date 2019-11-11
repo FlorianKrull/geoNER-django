@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'accounts',
     'ner_trainer',
+    'django_google_maps',
+    'mapwidgets',
 ]
 
 MIDDLEWARE = [
@@ -137,3 +139,5 @@ LOGIN_REDIRECT_URL = 'home'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 LOGIN_URL = 'login'
+
+MAP_WIDGETS = {"GoogleStaticMapWidget": (("zoom", 15),("size", "320x320"),("thumbnail_size", "100x100"),),"GoogleStaticMapMarkerSettings": (("color", "green"),),"GOOGLE_MAP_API_KEY": "AIzaSyDVqGWVu7zpwMvTFulMsBCSqmXxQqFvNWI>"}
