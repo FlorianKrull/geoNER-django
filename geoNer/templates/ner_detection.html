@@ -14,9 +14,15 @@
 <script src="{% static "js/displacy.js" %}"></script>
 <script src="{% static "js/jquery.min.js" %}"></script>
 
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+<script 
+    src="https://maps.googleapis.com/maps/api/js?v=quarterly
+        &key=AIzaSyCsowXGMuhLcqjebBKvZOCz3CbWDGZO3C8&callback=initMap">
+</script>
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script>
+  var geocoder = new google.maps.Geocoder();
     $(document).ready(function() {
         var latlng = new google.maps.LatLng("47.259659", "11.400375");
         var mapOptions = {
@@ -35,16 +41,29 @@
         });
         
         {% for ent in doc.ents %}
-            var geocoder = new google.maps.Geocoder();
-            latlng = new google.maps.LatLng("{{ shop.location.y }}", "{{ shop.location.x }}");
-            new google.maps.
-            new google.maps.Marker({
-                position: latlng,
-                map: map,
-                title:"{{ shop.name }}"
-            });
+          console.log("{{ ent.text }}");
+          codeAddress("{{ent.text}}");    
         {% endfor %}
     });
+
+
+    function codeAddress(address) 
+    {
+      geocoder.geocode( {address:address}, function(results, status) 
+      {
+        if (status == google.maps.GeocoderStatus.OK) 
+        {
+          //place a marker at the location
+          var marker = new google.maps.Marker(
+          {
+              map: map,
+              position: results[0].geometry.location
+          });
+        } else {
+          alert('Geocode was not successful for the following reason: ' + status);
+      }
+      });
+    }
 </script>
 <div class="map" style="width: auto; height: 400px;"></div>
 

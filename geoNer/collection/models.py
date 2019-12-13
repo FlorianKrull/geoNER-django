@@ -29,3 +29,9 @@ class Entity(models.Model):
     version = models.ForeignKey(Version, related_name='entity',on_delete=models.CASCADE)
     created_by = models.ForeignKey(User, related_name='entity',on_delete=models.CASCADE)
     geolocation = map_fields.GeoLocationField(max_length=100)
+
+class Gazetteer(models.Model):
+    location = models.TextField(max_length=500)
+    loc_id = models.FloatField()
+    lat = models.FloatField()
+    lon = models.FloatField()
